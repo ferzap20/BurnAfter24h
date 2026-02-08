@@ -1,0 +1,20 @@
+{
+  "name": "burn-after-24h",
+  "version": "1.0.0",
+  "description": "Anonymous messaging app where messages self-destruct after 24 hours",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm install && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "lint": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "anonymous",
+    "messaging",
+    "ephemeral"
+  ],
+  "author": "",
+  "license": "MIT"
+}
