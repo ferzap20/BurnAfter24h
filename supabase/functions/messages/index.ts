@@ -1,6 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.43.4";
-import { timingSafeEqual } from "node:crypto";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
