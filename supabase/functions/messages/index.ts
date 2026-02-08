@@ -219,7 +219,7 @@ async function handlePost(req: Request): Promise<Response> {
       JSON.stringify({
         success: true,
         data: {
-          id: messageData.id,
+          _id: messageData.id,
           nickname: messageData.nickname,
           message: messageData.message,
           country: messageData.country,
