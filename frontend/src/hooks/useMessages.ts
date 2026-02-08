@@ -3,6 +3,16 @@ import type { Message } from '../types';
 import { messageService } from '../services/messageService';
 
 const REFRESH_INTERVAL_MS = 60 * 1000; // 60 seconds
+const REPORTED_KEY = 'burn_reported_messages';
+
+function getReportedIds(): Set<string> {
+  try {
+    const data = localStorage.getItem(REPORTED_KEY);
+    return data ? new Set(JSON.parse(data)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
 
 export function useMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -13,9 +23,11 @@ export function useMessages() {
   const fetchMessages = useCallback(async () => {
     try {
       const data = await messageService.getMessages(100);
-      // Filter out client-side expired messages
       const now = Date.now();
-      const active = data.filter((m) => new Date(m.expiresAt).getTime() > now);
+      const reported = getReportedIds();
+      const active = data.filter(
+        (m) => new Date(m.expiresAt).getTime() > now && !reported.has(m._id)
+      );
       setMessages(active);
       setError(null);
       setLastUpdated(new Date());
@@ -36,5 +48,9 @@ export function useMessages() {
     setMessages((prev) => [msg, ...prev]);
   }, []);
 
-  return { messages, loading, error, refresh: fetchMessages, addMessage, lastUpdated };
+  const removeMessage = useCallback((id: string) => {
+    setMessages((prev) => prev.filter((m) => m._id !== id));
+  }, []);
+
+  return { messages, loading, error, refresh: fetchMessages, addMessage, removeMessage, lastUpdated };
 }

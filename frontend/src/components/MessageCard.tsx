@@ -7,9 +7,10 @@ import { ReportButton } from './ReportButton';
 interface MessageCardProps {
   message: Message;
   onClick: (message: Message) => void;
+  onReport?: (id: string) => void;
 }
 
-export function MessageCard({ message, onClick }: MessageCardProps) {
+export function MessageCard({ message, onClick, onReport }: MessageCardProps) {
   const { burnState, burnProgress, opacity } = useBurnAnimation(message.expiresAt);
 
   const truncated =
@@ -56,7 +57,7 @@ export function MessageCard({ message, onClick }: MessageCardProps) {
             minute: '2-digit',
           })}
         </span>
-        <ReportButton messageId={message._id} />
+        <ReportButton messageId={message._id} onReport={onReport} />
       </div>
 
       {/* Burn progress bar */}

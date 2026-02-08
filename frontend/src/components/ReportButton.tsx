@@ -4,6 +4,7 @@ import { reportService } from '../services/reportService';
 
 interface ReportButtonProps {
   messageId: string;
+  onReport?: (id: string) => void;
 }
 
 const REPORTED_KEY = 'burn_reported_messages';
@@ -23,7 +24,7 @@ function markAsReported(id: string): void {
   localStorage.setItem(REPORTED_KEY, JSON.stringify(Array.from(reported)));
 }
 
-export function ReportButton({ messageId }: ReportButtonProps) {
+export function ReportButton({ messageId, onReport }: ReportButtonProps) {
   const [reporting, setReporting] = useState(false);
   const [reported, setReported] = useState(() => getReportedMessages().has(messageId));
 
@@ -37,7 +38,8 @@ export function ReportButton({ messageId }: ReportButtonProps) {
       await reportService.reportMessage(messageId);
       markAsReported(messageId);
       setReported(true);
-      toast.success('Report submitted', {
+      onReport?.(messageId);
+      toast.success('Report submitted — message hidden', {
         style: { background: '#1a1a1a', color: '#e8e8e8', border: '1px solid #3a3a3a' },
       });
     } catch (err) {

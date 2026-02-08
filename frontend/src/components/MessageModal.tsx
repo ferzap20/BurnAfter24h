@@ -8,9 +8,10 @@ import { ReportButton } from './ReportButton';
 interface MessageModalProps {
   message: Message;
   onClose: () => void;
+  onReport?: (id: string) => void;
 }
 
-export function MessageModal({ message, onClose }: MessageModalProps) {
+export function MessageModal({ message, onClose, onReport }: MessageModalProps) {
   const { burnState, opacity } = useBurnAnimation(message.expiresAt);
   const closeRef = useRef<HTMLButtonElement>(null);
 
@@ -74,7 +75,7 @@ export function MessageModal({ message, onClose }: MessageModalProps) {
         {/* Burn indicator */}
         <div className="flex items-center justify-between">
           <TimeRemaining expiresAt={message.expiresAt} burnState={burnState} />
-          <ReportButton messageId={message._id} />
+          <ReportButton messageId={message._id} onReport={(id) => { onReport?.(id); onClose(); }} />
         </div>
 
         {/* Warning for burning state */}
