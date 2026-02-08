@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+/* Custom fire/ember/ash design tokens */
+@theme {
+  --color-fire-100: #fff0a0;
+  --color-fire-200: #ffd060;
+  --color-fire-300: #ffaa00;
+  --color-fire-400: #ff8800;
+  --color-fire-500: #ff6600;
+  --color-fire-600: #ee4400;
+  --color-fire-700: #cc2200;
+  --color-fire-800: #aa0000;
+  --color-fire-900: #800000;
+
+  --color-ember-100: #ff9966;
+  --color-ember-200: #ff7744;
+  --color-ember-300: #ff5522;
+  --color-ember-400: #dd3300;
+  --color-ember-500: #bb2200;
+  --color-ember-600: #991100;
+  --color-ember-700: #770000;
+
+  --color-ash-50: #2a2a2a;
+  --color-ash-100: #222222;
+  --color-ash-200: #1e1e1e;
+  --color-ash-300: #1a1a1a;
+  --color-ash-400: #161616;
+  --color-ash-500: #121212;
+  --color-ash-600: #0e0e0e;
+  --color-ash-700: #0a0a0a;
+  --color-ash-800: #060606;
+  --color-ash-900: #020202;
+
+  --color-smoke-100: #9a9a9a;
+  --color-smoke-200: #7a7a7a;
+  --color-smoke-300: #5a5a5a;
+  --color-smoke-400: #4a4a4a;
+  --color-smoke-500: #3a3a3a;
+  --color-smoke-600: #2a2a2a;
+}
+
+/* Global dark base */
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(255, 50, 0, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 100, 0, 0.03) 0%, transparent 40%);
+  color: #e8e8e8;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff6600;
+}
+
+/* Burn animations */
+@keyframes burn-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(255, 100, 0, 0.3);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 35px rgba(255, 100, 0, 0.6);
+  }
+}
+
+@keyframes flame-flicker {
+  0%, 100% { transform: scaleY(1) skewX(0deg); }
+  20% { transform: scaleY(1.05) skewX(-1deg); }
+  40% { transform: scaleY(0.95) skewX(1deg); }
+  60% { transform: scaleY(1.08) skewX(-0.5deg); }
+  80% { transform: scaleY(0.97) skewX(0.5deg); }
+}
+
+@keyframes ember-drift {
+  0% { transform: translateY(0px) translateX(0px); opacity: 0.8; }
+  100% { transform: translateY(-40px) translateX(10px); opacity: 0; }
+}
+
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes progress-shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Message card base */
+.message-card {
+  animation: card-appear 0.4s ease-out;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+}
+
+.message-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(255, 100, 0, 0.15);
+}
+
+/* Warning state (1-3 hours remaining) */
+.message-card.state-warning {
+  animation: burn-pulse 2.5s ease-in-out infinite;
+}
+
+/* Burning state (< 1 hour remaining) */
+.message-card.state-burning {
+  position: relative;
+  overflow: hidden;
+}
+
+.message-card.state-burning::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #800000, #cc2200, #ff6600, #ffaa00, #ff6600, #cc2200, #800000);
+  background-size: 200% 100%;
+  animation: progress-shine 2s linear infinite, flame-flicker 0.5s ease-in-out infinite;
+}
+
+/* Flame progress bar */
+.flame-bar {
+  background: linear-gradient(90deg, #800000, #cc2200, #ff6600, #ffaa00);
+  transition: width 0.5s ease;
+}
+
+/* Modal */
+.modal-overlay {
+  animation: fade-in 0.2s ease-out;
+}
+
+.modal-content {
+  animation: slide-up 0.25s ease-out;
+}
+
+/* Input focus glow */
+textarea:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.35);
+}
+
+/* Country flag */
+.flag-img {
+  border-radius: 2px;
+  object-fit: cover;
+}
